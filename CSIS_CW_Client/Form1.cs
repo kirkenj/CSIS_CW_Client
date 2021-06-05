@@ -113,13 +113,14 @@ namespace CSIS_CW_Client
         }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            client.Stop();
-            Process.GetCurrentProcess().Close();
-            Application.Exit();
+            
         }
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Form1_FormClosing(null, null);
+            client.Stop();
+            client = null;
+            Process.GetCurrentProcess().Close();
+            Application.Exit();
         }
     }
 }

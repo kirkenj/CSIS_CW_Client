@@ -148,11 +148,13 @@ namespace CSIS_CW_Client
         }
         public void Stop()
         {
-            if (!(_listenThread is null) && _listenThread.IsAlive)
+            _client.Close();
+            if (!(_listenThread == null) && _listenThread.IsAlive)
             {
                 _listenThread.Abort();
+                _ = _listenThread;
             }
-            if (!(_mainThread is null) && _mainThread.IsAlive)
+            if (!(_mainThread == null) && _mainThread.IsAlive)
             {
                 _mainThread.Abort();
             }
