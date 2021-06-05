@@ -2,6 +2,12 @@
 {
     class GameMessage
     {
+        private string _text;
+        public GameMessage()
+        {
+            _text = "";
+            LifeTime = 3000;
+        }
         public int LifeTime { get; set; }
         public bool Show
         {
@@ -22,14 +28,5 @@
                 LifeTime = 3000;
             }
         }
-
-        private string _text;
-
-        public GameMessage()
-        {
-            _text = "";
-            LifeTime = 3000;
-        }
-
     }
 }

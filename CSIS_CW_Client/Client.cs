@@ -14,17 +14,17 @@ namespace CSIS_CW_Client
     {
         private const string IP_STR = "127.0.0.1";
         private const int PORT = 11000;
-        private static readonly IPEndPoint IPENDPOINT = new IPEndPoint(IPAddress.Parse(IP_STR), PORT);
+        public IPEndPoint IPEndPoint { get; set; }
         private const int SERVER_PERIOD = 15;
 
-        private TcpClient _client;
         private Thread _listenThread;
         private readonly Thread _mainThread;
+        private readonly TcpClient _client;
+        private readonly GameMessage _message = new GameMessage();
+        private readonly int _poleWidth;
+        private readonly int _poleHeigth;
+        private readonly Bitmap _bitmap;
         private ClientCircle _circle = new ClientCircle();
-        private GameMessage _message = new GameMessage();
-        private int _poleWidth;
-        private int _poleHeigth;
-        private Bitmap _bitmap;
 
         public Client( int poleWidth, int poleHeigth)
         {
@@ -38,7 +38,6 @@ namespace CSIS_CW_Client
         public bool GameStarted { get; set; } = false;
         public string ConsoleStr { get; private set; }
         public bool Connected { get { return _client.Connected; } }
-
         public Bitmap Bitmap
         {
             get
@@ -57,11 +56,12 @@ namespace CSIS_CW_Client
                 return _bitmap;
             }
         }
+        
         public void Start()
         {
             try
             {
-                _client.Connect(IPENDPOINT);
+                _client.Connect(IPEndPoint);
                 SendMsg(ServerCommands.InitData.ToString() + ": " + '{' + $"{this._poleWidth},{this._poleHeigth}" + '}');
                 _mainThread.Start();
             }
@@ -70,7 +70,6 @@ namespace CSIS_CW_Client
                 OutlnConsole(ex.Message);
             }
         }
-
         public void MainLogic()
         {
             _listenThread = new Thread(RecieveMessage);
@@ -98,7 +97,6 @@ namespace CSIS_CW_Client
                 OutlnConsole(ex.Message + ex.Source);
             }
         }
-
         public void RecieveMessage()
         {
             byte[] byteRes;
@@ -136,7 +134,6 @@ namespace CSIS_CW_Client
             }
             OutlnConsole("Connection lost");   
         }
-
         public void SendMsg(string str)
         {
             if (_client.Connected)
@@ -145,21 +142,31 @@ namespace CSIS_CW_Client
                 this._client.Client.Send(sendArr);
             }
         }
-        private void OutlnConsole(string msg)
-        {
-            ConsoleStr += msg + "\r\n";
-        }
         public void ClearMessage()
         {
             _message.LifeTime = -1;
         }
-        
+        public void Stop()
+        {
+            if (!(_listenThread is null) && _listenThread.IsAlive)
+            {
+                _listenThread.Abort();
+            }
+            if (!(_mainThread is null) && _mainThread.IsAlive)
+            {
+                _mainThread.Abort();
+            }
+        }
+        private void OutlnConsole(string msg)
+        {
+            ConsoleStr += msg + "\r\n";
+        }
         private void HandleMessage(string str)
         {
             string[] wordsArr = str.Split();
             if (wordsArr[0] == ServerCommands.TransportPoint.ToString() + ':')
             {
-                OutlnConsole($"Got point: {wordsArr[1]}");
+                OutlnConsole($"Got circle: {wordsArr[1]}");
                 _circle = ClientCircle.Parse(wordsArr[1]);
             }
             else if (wordsArr[0] == ServerCommands.Stop.ToString())
@@ -185,11 +192,9 @@ namespace CSIS_CW_Client
                 _message.Text = "Level 3 started";
             }
         }
-
-        public void Stop()
+        public void StartLevel(int levelIDSince1)
         {
-            _listenThread.Abort();
-            _mainThread.Abort();
+            SendMsg($"StartLevel{levelIDSince1} .");
         }
     }
 }
