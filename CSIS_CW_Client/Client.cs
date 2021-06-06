@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Net.Sockets;
-using System.Collections.Generic;
 using System.Text;
 using System.Net;
 using System.Threading;
 using System.Drawing;
-
-//ManualResetEvent
 
 namespace CSIS_CW_Client
 {
@@ -29,7 +26,7 @@ namespace CSIS_CW_Client
         public Client( int poleWidth, int poleHeigth)
         {
             _client = new TcpClient();
-            _mainThread = new Thread(MainLogic);
+            _mainThread = new Thread(BootAndOutputLogic);
             this._poleHeigth = poleHeigth;
             this._poleWidth = poleWidth;
             _bitmap = new Bitmap(_poleWidth, _poleHeigth);
@@ -70,16 +67,15 @@ namespace CSIS_CW_Client
                 OutlnConsole(ex.Message);
             }
         }
-        public void MainLogic()
+        private void BootAndOutputLogic()
         {
             _listenThread = new Thread(RecieveMessage);
             _listenThread.Start();
             try
             {
-                while (_client.Client.Connected)
+                while (_client.Client != null && _client.Client.Connected)
                 {
 
-                    Thread.Sleep(SERVER_PERIOD);
                     if (_circle.Show)
                     {
                         _circle.LifeTime -= SERVER_PERIOD;
@@ -97,12 +93,12 @@ namespace CSIS_CW_Client
                 OutlnConsole(ex.Message + ex.Source);
             }
         }
-        public void RecieveMessage()
+        private void RecieveMessage()
         {
             byte[] byteRes;
             int arrLen;
             string recStr;
-            OutlnConsole("Waiting for messages...");
+            OutlnConsole("Жду сообщений...");
             while (_client.Connected)
             {
                 Thread.Sleep(SERVER_PERIOD);
@@ -114,12 +110,12 @@ namespace CSIS_CW_Client
                     arrLen = _client.Client.Receive(byteRes);
                     if (arrLen > 0)
                     {
-                        recStr = Encoding.ASCII.GetString(byteRes);
+                        recStr = Encoding.UTF8.GetString(byteRes);
                         while (!(char.IsLetterOrDigit(recStr[recStr.Length - 1]) || char.IsPunctuation(recStr[recStr.Length - 1])))
                         {
                             recStr = recStr.Remove(recStr.Length - 1);
                         }
-                        OutlnConsole("Message from server: " + recStr);
+                        OutlnConsole("Сообщение от сервера: " + recStr);
                         HandleMessage(recStr);
                     }
                 }
@@ -132,13 +128,13 @@ namespace CSIS_CW_Client
                     ConsoleStr += ex.GetType().Name + " " + ex.Message + '\n';
                 }
             }
-            OutlnConsole("Connection lost");   
+            OutlnConsole("Соединение потеряно");   
         }
         public void SendMsg(string str)
         {
             if (_client.Connected)
             {
-                byte[] sendArr = Encoding.ASCII.GetBytes(str);
+                byte[] sendArr = Encoding.UTF8.GetBytes(str);
                 this._client.Client.Send(sendArr);
             }
         }
@@ -148,7 +144,9 @@ namespace CSIS_CW_Client
         }
         public void Stop()
         {
+            SendMsg(ServerCommands.CloseSocket + " .");
             _client.Close();
+            Thread.Sleep(30);
             if (!(_listenThread == null) && _listenThread.IsAlive)
             {
                 _listenThread.Abort();
@@ -168,30 +166,18 @@ namespace CSIS_CW_Client
             string[] wordsArr = str.Split();
             if (wordsArr[0] == ServerCommands.TransportPoint.ToString() + ':')
             {
-                OutlnConsole($"Got circle: {wordsArr[1]}");
                 _circle = ClientCircle.Parse(wordsArr[1]);
+                OutlnConsole($"Got circle: {_circle.ToString()}");
             }
             else if (wordsArr[0] == ServerCommands.Stop.ToString())
             {
-                OutlnConsole("Game Stoped");
+                OutlnConsole("Игра остановлена");
                 GameStarted = false;
                 _message.Text = wordsArr[1].Replace('_', ' ');
             }
             else if (wordsArr[0] == ServerCommands.GameMessage.ToString() + ':')
             {
                 _message.Text = wordsArr[1].Replace('_', ' ');
-            }
-            else if (wordsArr[0] == ServerCommands.StartLevel1.ToString())
-            {
-                _message.Text = "Level 1 started";
-            }
-            else if (wordsArr[0] == ServerCommands.StartLevel2.ToString())
-            {
-                _message.Text = "Level 2 started";
-            }
-            else if (wordsArr[0] == ServerCommands.StartLevel1.ToString())
-            {
-                _message.Text = "Level 3 started";
             }
         }
         public void StartLevel(int levelIDSince1)

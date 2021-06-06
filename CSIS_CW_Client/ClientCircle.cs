@@ -11,27 +11,6 @@ namespace CSIS_CW_Client
             this.LifeTime = 0;
             this.RadiusPix = 0;
         }
-        public ClientCircle(int x, int y, int lifetimeMilisec, int radius)
-        {
-            this.X = x;
-            this.Y = y;
-            this.LifeTime = lifetimeMilisec;
-            this.RadiusPix = radius;
-        }
-        public ClientCircle(int x, int y)
-        {
-            this.X = x;
-            this.Y = y;
-            this.LifeTime = 1000;
-            this.RadiusPix = 40;
-        }
-        public ClientCircle(Point point)
-        {
-            this.X = point.X;
-            this.Y = point.Y;
-            this.LifeTime = 1000;
-            this.RadiusPix = 40;
-        }
         public ClientCircle(Point point, int lifetimeMilisec, int radius)
         {
             this.X = point.X;
@@ -74,14 +53,6 @@ namespace CSIS_CW_Client
                 int.Parse(m[2]),
                 int.Parse(m[3])
                 );
-        }
-        public bool InterrectsWithPoint(Point point)
-        {
-            return this.Rectangle.IntersectsWith(new Rectangle(point, Size.Empty));
-        }
-        new public string ToString()
-        {
-            return '{' + $"{X},{Y},{LifeTime},{RadiusPix}" + '}';
         }
     }
 }

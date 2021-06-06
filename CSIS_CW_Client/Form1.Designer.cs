@@ -50,11 +50,11 @@ namespace CSIS_CW_Client
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(710, 13);
+            this.button1.Location = new System.Drawing.Point(701, 13);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(93, 23);
             this.button1.TabIndex = 1;
-            this.button1.Text = "Connect";
+            this.button1.Text = "Подключиться";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -64,7 +64,7 @@ namespace CSIS_CW_Client
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 1;
-            this.button2.Text = "Send";
+            this.button2.Text = "Отправить";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -105,22 +105,22 @@ namespace CSIS_CW_Client
             this.groupBox1.Controls.Add(this.radioButton3);
             this.groupBox1.Controls.Add(this.radioButton2);
             this.groupBox1.Controls.Add(this.radioButton1);
-            this.groupBox1.Location = new System.Drawing.Point(710, 71);
+            this.groupBox1.Location = new System.Drawing.Point(701, 72);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(104, 100);
+            this.groupBox1.Size = new System.Drawing.Size(98, 100);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Level Selection";
+            this.groupBox1.Text = "Выбор уровня";
             // 
             // radioButton3
             // 
             this.radioButton3.AutoSize = true;
             this.radioButton3.Location = new System.Drawing.Point(6, 65);
             this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(48, 17);
+            this.radioButton3.Size = new System.Drawing.Size(64, 17);
             this.radioButton3.TabIndex = 0;
             this.radioButton3.TabStop = true;
-            this.radioButton3.Text = "Hard";
+            this.radioButton3.Text = "Сложно";
             this.radioButton3.UseVisualStyleBackColor = true;
             // 
             // radioButton2
@@ -128,10 +128,10 @@ namespace CSIS_CW_Client
             this.radioButton2.AutoSize = true;
             this.radioButton2.Location = new System.Drawing.Point(6, 42);
             this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(62, 17);
+            this.radioButton2.Size = new System.Drawing.Size(83, 17);
             this.radioButton2.TabIndex = 0;
             this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "Medium";
+            this.radioButton2.Text = "Нормально";
             this.radioButton2.UseVisualStyleBackColor = true;
             // 
             // radioButton1
@@ -140,10 +140,10 @@ namespace CSIS_CW_Client
             this.radioButton1.Checked = true;
             this.radioButton1.Location = new System.Drawing.Point(6, 19);
             this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(48, 17);
+            this.radioButton1.Size = new System.Drawing.Size(56, 17);
             this.radioButton1.TabIndex = 0;
             this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "Easy";
+            this.radioButton1.Text = "Легко";
             this.radioButton1.UseVisualStyleBackColor = true;
             // 
             // button3
@@ -152,7 +152,7 @@ namespace CSIS_CW_Client
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 6;
-            this.button3.Text = "Start";
+            this.button3.Text = "Старт";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
@@ -162,7 +162,7 @@ namespace CSIS_CW_Client
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(75, 23);
             this.button4.TabIndex = 6;
-            this.button4.Text = "Stop";
+            this.button4.Text = "Стоп";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
@@ -177,11 +177,11 @@ namespace CSIS_CW_Client
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(507, 440);
+            this.label1.Location = new System.Drawing.Point(496, 440);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(91, 13);
+            this.label1.Size = new System.Drawing.Size(108, 13);
             this.label1.TabIndex = 8;
-            this.label1.Text = "Server IP + Port - ";
+            this.label1.Text = "IP сервера + Порт - ";
             // 
             // Form1
             // 
@@ -199,7 +199,7 @@ namespace CSIS_CW_Client
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Name = "Form1";
-            this.Text = "Check reaction";
+            this.Text = "Проверка реакции";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
